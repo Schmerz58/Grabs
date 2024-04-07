@@ -1,5 +1,5 @@
 espiri_mesaj = [
-    "To have this many bots in your room for an hour pm @karainek"
+    "To have this many bots in your room for 6 hours (500g) pm @karainek"
 ]
 
 laf_mesaj = [
