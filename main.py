@@ -1,14 +1,10 @@
-from highrise import *
-from highrise.models import *
+from highrise import BaseBot
+from highrise.models import SessionMetadata
 from asyncio import run as arun
 from flask import Flask
 from threading import Thread
 from highrise.__main__ import *
-import random
-import asyncio
-from mesajlar import*
-
-
+import time
 
 class Bot(BaseBot):
     def __init__(self):
@@ -17,26 +13,7 @@ class Bot(BaseBot):
 
     async def on_start(self, session_metadata: SessionMetadata) -> None:
         print("hi im alive?")
-        self.highrise.tg.create_task(self.highrise.teleport(
-            session_metadata.user_id, Position(13.5, 0.00,7.5, "FrontRight")))
-        await self.send_periodic_messages()
 
-    async def send_periodic_messages(self):
-        while True:
-            try:
-                message_list = random.choice([espiri_mesaj, laf_mesaj, sarki_mesaj, rizz_mesaj])
-  
-                message = random.choice(message_list)
-              
-                wait_time = random.choice([45, 60, 90])
-
-                await asyncio.sleep(wait_time)
-
-                await self.highrise.chat(message)
-            except Exception as e:
-                print(f"Caught Periodic Message Error: {e}")
-
-      
   
     async def run(self, room_id, token) -> None:
         await __main__.main(self, room_id, token)
@@ -57,50 +34,19 @@ class WebServer():
     t.start()
     
 class RunBot():
-    room_ids = [
-        "66120073266df7ec832b3d6a",
-        "66120073266df7ec832b3d6a",
-        "66120073266df7ec832b3d6a",
-        "66120073266df7ec832b3d6a",
-        "66120073266df7ec832b3d6a",
-        "66120073266df7ec832b3d6a",
-        "66120073266df7ec832b3d6a",
-        "66120073266df7ec832b3d6a",
-        "66120073266df7ec832b3d6a",
-        "66120073266df7ec832b3d6a",
-        "66120073266df7ec832b3d6a",
-        "66120073266df7ec832b3d6a",
-        "66120073266df7ec832b3d6a",
-        "66120073266df7ec832b3d6a",
-        "66120073266df7ec832b3d6a",
-        "66120073266df7ec832b3d6a",
-        "66120073266df7ec832b3d6a",
-        "66120073266df7ec832b3d6a",
-        "66120073266df7ec832b3d6a",
-        "66120073266df7ec832b3d6a",
-        "66120073266df7ec832b3d6a",
-        "66120073266df7ec832b3d6a",
-        "66120073266df7ec832b3d6a",
-        "66120073266df7ec832b3d6a",
-        "66120073266df7ec832b3d6a",
-        "66120073266df7ec832b3d6a",
-        "66120073266df7ec832b3d6a",
-        "66120073266df7ec832b3d6a"
-    ]
+    room_id = "66120073266df7ec832b3d6a"
+
   
     bot_tokens = [
     "05cd61bbfce80c4b87a05b9ee14386c5cd1f241e4f0dd4315653134cc02c28b8",
     "b467994561c3a408afb180e54aeefa3725ef2cf886ed6068e9ecd3340529d31c",
     "037589ec724e29569dc66c359cb4d656ee1417cc5cc01637147db321d350c8bd",
-    "000a0aea9eff337ca53b7e876a00ef5149040f2e107b5e00caa0b88e462cad5d",
     "f661f2ed3910aaa364dd214a5d41b31520c41de74a8a22153eca5c150c5ea34b",
     "88e811e62061c7dd82ac6e53834a70ffc04c71f16b30f9c084e72a52b325a4b1",
     "ea375b8d777669a9976cb88304a7f35ddbad73e6503b39c197a30e7ff0928166",
     "8dbd52b236c88e87a299ff8a02fe2f0dfa713a4402cfa309a6d26bcb5f033be6",
     "f1a613039969782118c701cd873e27960e104ea68395aeffaa0e952aab4c532a",
-    "a3173f8ffd11cd478fba82c4b76a1da3f9f7299963602b9f49ceac87ad407f6a",
     "0d876223d08d5984880e61e9aa28ef1809a6eaa7dfe23004e3b2b7e8daa30fd1",
-    "a85e2acb40e044c4efd059707bc58b315c7b2ab5d22a2ac3a84a0e693e39f204",
     "766f9f05518821666249bef2e78033ad8141a8d64e61b9b93aa7f03347ca90bc",
     "7708e61d980b46e16f3599147ffe2dea463a66db090d83318ecda10112626f77",
     "d0eb9f1aef9a72439330d68ef1f907759a895eeefcc258e642c2abaeb8a9fe1b",
@@ -116,20 +62,34 @@ class RunBot():
     "d2d2d461f503fb2439ba0762fec3c8bd20d3c1e2c7807c7fcc3d7b09323c9d1c",
     "c97486eab63dde5c6e8aa10092b7c843fbf8d803d0fbf252e51872050f82b97d",
     "d58d4cc6ec292d05c2d94ba0254a3d1bbbba3f9336409cf5e2ae2a7b0fda502e",
-    "5be74ae3f5c7ec39e4ee1bfb6ffdb3465f3c2dc4b321554565462faa73bae73f"
+    "5be74ae3f5c7ec39e4ee1bfb6ffdb3465f3c2dc4b321554565462faa73bae73f",
+    "3b0a3e28ac8ccb09406e36836cbc0849b31813298a65905c4c692ff591eeb834",
+    "511d98de11346927da061b314ed5be7778b8e4b776d7c3e3bb1f1c13f69ca40d",
+    "07c8e98f26636136cbd6ea341310252ff38cad684ab734cb11de133bcd42e732",
+    "7d1b5dd0610310a7d4c0736dbdd5bf4481e17216c9982b6e926af94a26736af4",
+    "727353235b37c4844aa1d11e5e98871382d069523375b1f9879dd195fc82784e",
+    "4062708aebace55869e3088632cc6cec14d12125ad6e1a8e01c389f93fd7258",
+    "46544038fb9749933eedef945049e6a83c2fe3823524290c2c7e878cf28761a3",
+    "f443c7ad0e8ce98edfd51c96538010594dfd3000eab0a14763fbeb7d3dd671c0",
+    "c11fe016928317b1a85eff7935f88e716fcc9edea160efb02eaf124bfceba0e3",
+    "4bd0df3947b89fa25b7552309beebe6abc35d3d28625019a9cc56795ab31ffe0",
+    "f9097578b4679d0edfce4f9d8b9d6fe8e688e68757ad4412509c751a1f5b9640",
+    "0f766e6bcde4f6b7d7b8c057e4fdbb1b7dd4caea7a23f9387d240bfb881e96e4",
+    "e6877603e1bf5ded398acf2574e23fdd9e2677adf6519a0df6ce36f6eebf8e1c"
     ]
+
     bot_file = "main"
     bot_class = "Bot"
 
     def __init__(self) -> None:
         self.definitions = []
-        for room_id, bot_token in zip(self.room_ids, self.bot_tokens):
+        for bot_token in self.bot_tokens:
             self.definitions.append(
                 BotDefinition(
                     getattr(import_module(self.bot_file), self.bot_class)(),
-                    room_id, bot_token)
+                    self.room_id, bot_token)
             )
-
+              
     def run_loop(self) -> None:
         while True:
             try:
