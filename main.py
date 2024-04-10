@@ -1,9 +1,9 @@
-from highrise import*
-from highrise.models import*
+from highrise import BaseBot
 from asyncio import run as arun
 from flask import Flask
 from threading import Thread
-from highrise.__main__ import *
+from highrise.__main__ import*
+import time
 
 class Bot(BaseBot):
     def __init__(self):
