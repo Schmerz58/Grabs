@@ -1,8 +1,11 @@
-from highrise import BaseBot
+from highrise import *
+from highrise.models import *
 from asyncio import run as arun
 from flask import Flask
 from threading import Thread
-from highrise.__main__ import*
+from highrise.__main__ import *
+import random
+import asyncio
 import time
 
 class Bot(BaseBot):
