@@ -16,23 +16,17 @@ class Bot(BaseBot):
 
     async def on_start(self, session_metadata: SessionMetadata) -> None:
         print("hi im alive?")
-        await self.send_periodic_messages()
 
-
-    async def send_periodic_messages(self):
-        while True:
+    
+    async def on_chat(self, user: User, message: str) -> None:
+        if message.lower() == "random":
             try:
                 message_list = random.choice([espiri_mesaj, laf_mesaj, sarki_mesaj, rizz_mesaj])
-  
                 message = random.choice(message_list)
-              
-                wait_time = random.choice([45, 60, 90])
-
-                await asyncio.sleep(wait_time)
-
                 await self.highrise.chat(message)
             except Exception as e:
-                print(f"Caught Periodic Message Error: {e}")
+                print(f"Caught Random Message Error: {e}")
+
   
     async def run(self, room_id, token) -> None:
         await __main__.main(self, room_id, token)
