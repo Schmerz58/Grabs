@@ -8,14 +8,49 @@ import random
 import asyncio
 import time
 from mesajlar import*
+from kiy import*
 
 class Bot(BaseBot):
     def __init__(self):
         super().__init__()
 
 
+
     async def on_start(self, session_metadata: SessionMetadata) -> None:
-        print("hi im alive?")
+        # Call the method to change outfit every 30 minutes
+        await self.change_outfit_periodically()
+
+    async def change_outfit_periodically(self):
+        while True:
+            await self.change_outfit()
+            # Wait for 30 minutes before changing outfit again
+            await asyncio.sleep(60)  # 30 minutes in seconds
+
+    async def change_outfit(self):
+        # Randomly select active color palettes
+        hair_active_palette = random.randint(0, 82)
+        skin_active_palette = random.randint(0, 88)
+        eye_active_palette = random.randint(0, 49)
+        lip_active_palette = random.randint(0, 58)
+        
+        # Set the outfit with randomly chosen items and color palettes
+        outfit = [
+            Item(type='clothing', amount=1, id='body-flesh', account_bound=False, active_palette=skin_active_palette),
+            Item(type='clothing', amount=1, id=random.choice(item_shirt), account_bound=False, active_palette=-1),
+            Item(type='clothing', amount=1, id=random.choice(item_bottom), account_bound=False, active_palette=-1),
+            Item(type='clothing', amount=1, id=random.choice(item_accessory), account_bound=False, active_palette=-1),
+            Item(type='clothing', amount=1, id=random.choice(item_shoes), account_bound=False, active_palette=-1),
+            Item(type='clothing', amount=1, id=random.choice(item_freckle), account_bound=False, active_palette=-1),
+            Item(type='clothing', amount=1, id=random.choice(item_eye), account_bound=False, active_palette=eye_active_palette),
+            Item(type='clothing', amount=1, id=random.choice(item_mouth), account_bound=False, active_palette=lip_active_palette),
+            Item(type='clothing', amount=1, id=random.choice(item_nose), account_bound=False, active_palette=-1),
+            Item(type='clothing', amount=1, id=random.choice(item_hairback), account_bound=False, active_palette=hair_active_palette),
+            Item(type='clothing', amount=1, id=random.choice(item_hairfront), account_bound=False, active_palette=hair_active_palette),
+            Item(type='clothing', amount=1, id=random.choice(item_eyebrow), account_bound=False, active_palette=hair_active_palette)
+        ]
+        
+        # Set the outfit for the character
+        await self.highrise.set_outfit(outfit=outfit)
 
     
     async def on_chat(self, user: User, message: str) -> None:
@@ -89,6 +124,7 @@ class RunBot():
     "f9097578b4679d0edfce4f9d8b9d6fe8e688e68757ad4412509c751a1f5b9640",
     "0f766e6bcde4f6b7d7b8c057e4fdbb1b7dd4caea7a23f9387d240bfb881e96e4",
     "e6877603e1bf5ded398acf2574e23fdd9e2677adf6519a0df6ce36f6eebf8e1c"
+
     ]
 
     bot_file = "main"
