@@ -24,7 +24,7 @@ class Bot(BaseBot):
         while True:
             await self.change_outfit()
             # Wait for 30 minutes before changing outfit again
-            await asyncio.sleep(60)  # 30 minutes in seconds
+            await asyncio.sleep(5)  # 30 minutes in seconds
 
     async def change_outfit(self):
         # Randomly select active color palettes
