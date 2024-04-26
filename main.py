@@ -16,45 +16,34 @@ class Bot(BaseBot):
 
 
 
-    async def on_start(self, session_metadata: SessionMetadata) -> None:
-        # Call the method to change outfit every 30 minutes
-        await self.change_outfit_periodically()
-
-    async def change_outfit_periodically(self):
-        while True:
-            await self.change_outfit()
-            # Wait for 30 minutes before changing outfit again
-            await asyncio.sleep(5)  # 30 minutes in seconds
-
-    async def change_outfit(self):
-        # Randomly select active color palettes
-        hair_active_palette = random.randint(0, 82)
-        skin_active_palette = random.randint(0, 88)
-        eye_active_palette = random.randint(0, 49)
-        lip_active_palette = random.randint(0, 58)
-        
-        # Set the outfit with randomly chosen items and color palettes
-        outfit = [
-            Item(type='clothing', amount=1, id='body-flesh', account_bound=False, active_palette=skin_active_palette),
-            Item(type='clothing', amount=1, id=random.choice(item_shirt), account_bound=False, active_palette=-1),
-            Item(type='clothing', amount=1, id=random.choice(item_bottom), account_bound=False, active_palette=-1),
-            Item(type='clothing', amount=1, id=random.choice(item_accessory), account_bound=False, active_palette=-1),
-            Item(type='clothing', amount=1, id=random.choice(item_shoes), account_bound=False, active_palette=-1),
-            Item(type='clothing', amount=1, id=random.choice(item_freckle), account_bound=False, active_palette=-1),
-            Item(type='clothing', amount=1, id=random.choice(item_eye), account_bound=False, active_palette=eye_active_palette),
-            Item(type='clothing', amount=1, id=random.choice(item_mouth), account_bound=False, active_palette=lip_active_palette),
-            Item(type='clothing', amount=1, id=random.choice(item_nose), account_bound=False, active_palette=-1),
-            Item(type='clothing', amount=1, id=random.choice(item_hairback), account_bound=False, active_palette=hair_active_palette),
-            Item(type='clothing', amount=1, id=random.choice(item_hairfront), account_bound=False, active_palette=hair_active_palette),
-            Item(type='clothing', amount=1, id=random.choice(item_eyebrow), account_bound=False, active_palette=hair_active_palette)
-        ]
-        
-        # Set the outfit for the character
-        await self.highrise.set_outfit(outfit=outfit)
-
-    
     async def on_chat(self, user: User, message: str) -> None:
-        if message.lower() == "random":
+        if message.lower().startswith("degis") and await self.is_user_allowed(user):
+            # Randomly select active color palettes
+            hair_active_palette = random.randint(0, 82)
+            skin_active_palette = random.randint(0, 88)
+            eye_active_palette = random.randint(0, 49)
+            lip_active_palette = random.randint(0, 58)
+            
+            # Set the outfit with randomly chosen items and color palettes
+            outfit = [
+                Item(type='clothing', amount=1, id='body-flesh', account_bound=False, active_palette=skin_active_palette),
+                Item(type='clothing', amount=1, id=random.choice(item_shirt), account_bound=False, active_palette=-1),
+                Item(type='clothing', amount=1, id=random.choice(item_bottom), account_bound=False, active_palette=-1),
+                Item(type='clothing', amount=1, id=random.choice(item_accessory), account_bound=False, active_palette=-1),
+                Item(type='clothing', amount=1, id=random.choice(item_shoes), account_bound=False, active_palette=-1),
+                Item(type='clothing', amount=1, id=random.choice(item_freckle), account_bound=False, active_palette=-1),
+                Item(type='clothing', amount=1, id=random.choice(item_eye), account_bound=False, active_palette=eye_active_palette),
+                Item(type='clothing', amount=1, id=random.choice(item_mouth), account_bound=False, active_palette=lip_active_palette),
+                Item(type='clothing', amount=1, id=random.choice(item_nose), account_bound=False, active_palette=-1),
+                Item(type='clothing', amount=1, id=random.choice(item_hairback), account_bound=False, active_palette=hair_active_palette),
+                Item(type='clothing', amount=1, id=random.choice(item_hairfront), account_bound=False, active_palette=hair_active_palette),
+                Item(type='clothing', amount=1, id=random.choice(item_eyebrow), account_bound=False, active_palette=hair_active_palette)
+            ]
+            
+            # Set the outfit for the character
+            await self.highrise.set_outfit(outfit=outfit)
+      
+        if message.lower() == "random" and await self.is_user_allowed(user):
             try:
                 message_list = random.choice([espiri_mesaj, laf_mesaj, sarki_mesaj, rizz_mesaj])
                 message = random.choice(message_list)
@@ -62,6 +51,10 @@ class Bot(BaseBot):
             except Exception as e:
                 print(f"Caught Random Message Error: {e}")
 
+
+    async def is_user_allowed(self, user: User) -> bool:
+        user_privileges = await self.highrise.get_room_privilege(user.id)
+        return user_privileges.moderator or user_privileges.designer or user.username in ["karainek"]
   
     async def run(self, room_id, token) -> None:
         await __main__.main(self, room_id, token)
